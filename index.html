@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,67 +10,84 @@
     <!-- ApexCharts CDN -->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; background-color: #f1f5f9; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f1f5f9;
+        }
     </style>
 </head>
+
 <body class="bg-slate-100 text-slate-800 antialiased py-6 px-4">
 
     <div class="max-w-xl mx-auto space-y-6">
 
         <!-- Header -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 text-center">
-            <span class="bg-indigo-50 text-indigo-600 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Laporan Analisis Data</span>
+            <span
+                class="bg-indigo-50 text-indigo-600 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Laporan
+                Analisis Data</span>
             <h1 class="text-xl font-extrabold text-slate-900 mt-2">Dashboard Kesenjangan & Prestasi Mahasiswa</h1>
-            <p class="text-xs text-slate-500 mt-1">Eksplorasi pengaruh UKT, Dukungan Keluarga, dan Pendidikan Ibu terhadap Akademik</p>
+            <p class="text-xs text-slate-500 mt-1">Eksplorasi pengaruh UKT, Dukungan Keluarga, dan Pendidikan Ibu
+                terhadap Akademik</p>
         </div>
 
         <!-- Top Summary Cards -->
         <div class="grid grid-cols-2 gap-4">
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                <p class="text-xs text-slate-400 font-semibold uppercase">Gap Juara (Ibu S3)</p>
-                <p class="text-2xl font-black text-indigo-600 mt-1">+42,2%</p>
-                <p class="text-[11px] text-slate-500 mt-1 leading-tight">vs Ibu Tidak Sekolah, dimensi gap prestasi terbesar.</p>
+                <p class="text-xs text-slate-400 font-semibold uppercase">Selisih Prestasi Akademik</p>
+                <p class="text-2xl font-black text-indigo-600 mt-1">+8,9%</p>
+                <p class="text-[11px] text-slate-500 mt-1 leading-tight">Selisih proporsi mahasiswa berprestasi dengan latar belakang pendidikan ibu lulusan S3 dibandingkan ibu tidak sekolah.</p>
             </div>
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                <p class="text-xs text-slate-400 font-semibold uppercase">Rasio Kerja (UKT 1/8)</p>
-                <p class="text-2xl font-black text-rose-500 mt-1">~8,8×</p>
-                <p class="text-[11px] text-slate-500 mt-1 leading-tight">51,2% (UKT 1) berbanding 5,8% (UKT 8) mahasiswa bekerja.</p>
+                <p class="text-xs text-slate-400 font-semibold uppercase">Beban Kerja Mahasiswa</p>
+                <p class="text-2xl font-black text-rose-500 mt-1">&plusmn;8,8×</p>
+                <p class="text-[11px] text-slate-500 mt-1 leading-tight">Intensitas bekerja sambilan mahasiswa kelompok UKT 1 ±8x lebih berat dibandingkan kelompok UKT 8.</p>
             </div>
         </div>
 
         <!-- SECTION 1: KATEGORI UKT -->
         <div class="space-y-4">
             <div class="border-b border-slate-200 pb-2">
-                <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Bagian 1: Analisis Berdasarkan Kategori UKT</h2>
+                <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Bagian 1: Analisis Berdasarkan
+                    Kategori UKT</h2>
             </div>
 
             <!-- Chart 1: Bekerja per UKT -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Proporsi Mahasiswa Bekerja Sambil Kuliah</h3>
-                <p class="text-xs text-slate-500 mb-3">Persentase mahasiswa dari UKT 1 hingga UKT 8 yang harus membagi waktu kerja.</p>
+                <h3 class="text-sm font-bold text-slate-800">Perbandingan Proporsi Mahasiswa Bekerja Sambil Kuliah
+                    Berdasarkan Kategori Biaya UKT</h3>
+                <p class="text-xs text-slate-500 mb-3">Persentase mahasiswa yang harus membagi waktu untuk bekerja sambil kuliah dari kelompok UKT terendah ke tertinggi
+                    </p>
                 <div id="chartBekerja"></div>
                 <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Terjadi penurunan linier yang konsisten dari 51,2% (UKT 1) ke 5,8% (UKT 8). Semakin rendah kategori UKT, semakin tinggi tekanan ekonomi untuk bekerja.
+                    💡 <span class="font-semibold">Insight:</span> Terjadi penurunan linier yang konsisten dari 51,2%
+                    (UKT 1) ke 5,8% (UKT 8). Semakin rendah kategori UKT, semakin tinggi tekanan ekonomi untuk bekerja.
                 </div>
             </div>
 
             <!-- Chart 2: IPK per UKT -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Rata-rata IPK Mahasiswa per Kategori UKT</h3>
-                <p class="text-xs text-slate-500 mb-3">Perbandingan capaian akademik rata-rata dari kelompok UKT terendah ke tertinggi.</p>
+                <h3 class="text-sm font-bold text-slate-800">Perbandingan Rata-rata IPK Mahasiswa Berdasarkan Kategori
+                    Biaya UKT</h3>
+                <p class="text-xs text-slate-500 mb-3">Perbandingan capaian akademik rata-rata dari kelompok UKT
+                    terendah ke tertinggi.</p>
                 <div id="chartIPK"></div>
                 <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Rata-rata IPK meningkat secara bertahap dari 2,94 (UKT 1) hingga 3,39 (UKT 8), berjalan seirama dengan berkurangnya beban kerja sambilan.
+                    💡 <span class="font-semibold">Insight:</span> Rata-rata IPK meningkat secara bertahap dari 2,94
+                    (UKT 1) hingga 3,39 (UKT 8), berjalan seirama dengan berkurangnya beban kerja sambilan.
                 </div>
             </div>
 
             <!-- Chart 3: Juara per UKT -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Proporsi Mahasiswa Pernah Juara per UKT</h3>
-                <p class="text-xs text-slate-500 mb-3">Persentase perolehan juara kompetisi akademik/non-akademik.</p>
+                <h3 class="text-sm font-bold text-slate-800">Perbandingan Proporsi Mahasiswa Pernah Juara Berdasarkan
+                    Kategori Biaya UKT</h3>
+                <p class="text-xs text-slate-500 mb-3">Proporsi mahasiswa yang pernah meraih juara dari kelompok UKT terendah ke tertinggi</p>
                 <div id="chartJuaraUKT"></div>
                 <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Anomali positif atau kesenjangan akses terlihat di mana kelompok UKT atas memiliki proporsi juara jauh lebih tinggi ( hingga 23,7% ) dibanding UKT 1 (7,9%).
+                    💡 <span class="font-semibold">Insight:</span> Anomali positif atau kesenjangan akses terlihat di
+                    mana kelompok UKT atas memiliki proporsi juara jauh lebih tinggi ( hingga 23,7% ) dibanding UKT 1
+                    (7,9%).
                 </div>
             </div>
         </div>
@@ -77,46 +95,56 @@
         <!-- SECTION 2: DUKUNGAN KELUARGA -->
         <div class="space-y-4 pt-4">
             <div class="border-b border-slate-200 pb-2">
-                <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Bagian 2: Pengaruh Dukungan Keluarga (Tingkat 1 vs 5)</h2>
+                <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Bagian 2: Pengaruh Dukungan
+                    Keluarga (Tingkat 1 vs 5)</h2>
             </div>
 
             <!-- Dukungan - Proporsi Juara -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Perbandingan Proporsi Juara</h3>
-                <p class="text-xs text-slate-500 mb-3">Dukungan keluarga terendah (Tingkat 1) vs tertinggi (Tingkat 5).</p>
+                <h3 class="text-sm font-bold text-slate-800">Perbandingan Proporsi Mahasiswa Juara Berdasarkan Tingkat
+                    Dukungan Keluarga</h3>
+                <p class="text-xs text-slate-500 mb-3">Persentase mahasiswa raih juara dengan dukungan orang tua tingkat 1 dibandingkan tingkat 5
+                </p>
                 <div id="chartDukJuara"></div>
                 <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Gap sebesar +15,0 poin persentase menunjukkan dukungan keluarga memberi dorongan signifikan bagi mahasiswa untuk berprestasi.
+                    💡 <span class="font-semibold">Insight:</span> Gap sebesar +15,0 poin persentase menunjukkan
+                    dukungan keluarga memberi dorongan signifikan bagi mahasiswa untuk berprestasi.
                 </div>
             </div>
 
             <!-- Dukungan - Prestasi Internasional -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Prestasi Skala Internasional</h3>
-                <p class="text-xs text-slate-500 mb-3">Persentase mahasiswa yang menembus kompetisi internasional.</p>
+                <h3 class="text-sm font-bold text-slate-800">Perbandingan Proporsi Mahasiswa Berprestasi Internasional
+                    Berdasarkan Tingkat Dukungan Keluarga</h3>
+                <p class="text-xs text-slate-500 mb-3">Persentase keberhasilan mahasiswa dengan dukungan orang tua tingkat 1 dibandingkan tingkat 5 dalam menembus ajang kompetisi internasional.</p>
                 <div id="chartDukInter"></div>
                 <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Mahasiswa dengan dukungan tertinggi hampir 3× lebih sering mencetak prestasi internasional (3,2% vs 1,0%).
+                    💡 <span class="font-semibold">Insight:</span> Mahasiswa dengan dukungan tertinggi hampir 3× lebih
+                    sering mencetak prestasi internasional (3,2% vs 1,0%).
                 </div>
             </div>
 
             <!-- Dukungan - Rata-rata IPK -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Rata-rata IPK Mahasiswa</h3>
-                <p class="text-xs text-slate-500 mb-3">Capaian IPK berdasarkan tingkat dukungan keluarga.</p>
+                <h3 class="text-sm font-bold text-slate-800">Perbandingan Rata-rata IPK Mahasiswa Berdasarkan Tingkat
+                    Dukungan Keluarga</h3>
+                <p class="text-xs text-slate-500 mb-3">Capaian IPK berdasarkan dukungan keluarga tingkat 1 dibandingkan dengan tingkat 5</p>
                 <div id="chartDukIPK"></div>
                 <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Terdapat gradien positif yang jelas pada IPK rata-rata (2,93 naik menjadi 3,38).
+                    💡 <span class="font-semibold">Insight:</span> Terdapat gradien positif yang jelas pada IPK
+                    rata-rata (2,93 naik menjadi 3,38).
                 </div>
             </div>
 
             <!-- Dukungan - Bekerja Sambil Kuliah -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Proporsi Mahasiswa Bekerja Sambil Kuliah</h3>
-                <p class="text-xs text-slate-500 mb-3">Beban kerja sambilan berdasarkan tingkat dukungan keluarga.</p>
+                <h3 class="text-sm font-bold text-slate-800">Perbandingan Proporsi Mahasiswa Bekerja Berdasarkan Tingkat
+                    Dukungan Keluarga</h3>
+                <p class="text-xs text-slate-500 mb-3">Persentase mahasiswa yang memiliki beban kerja sambilan berdasarkan dukungan keluarga tingkat 1 dibandingkan dengan tingkat 5.</p>
                 <div id="chartDukKerja"></div>
                 <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Semakin tinggi dukungan keluarga, semakin kecil keharusan mahasiswa untuk bekerja paruh waktu (39,1% turun ke 15,2%).
+                    💡 <span class="font-semibold">Insight:</span> Semakin tinggi dukungan keluarga, semakin kecil
+                    keharusan mahasiswa untuk bekerja paruh waktu (39,1% turun ke 15,2%).
                 </div>
             </div>
         </div>
@@ -124,36 +152,43 @@
         <!-- SECTION 3: PENDIDIKAN IBU -->
         <div class="space-y-4 pt-4">
             <div class="border-b border-slate-200 pb-2">
-                <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Bagian 3: Latar Belakang Pendidikan Ibu (Tidak Sekolah vs S3)</h2>
+                <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Bagian 3: Latar Belakang
+                    Pendidikan Ibu (Tidak Sekolah vs S3)</h2>
             </div>
 
             <!-- Ibu - Proporsi Juara -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Perbandingan Proporsi Juara</h3>
-                <p class="text-xs text-slate-500 mb-3">Ibu Tidak Sekolah vs Ibu berpendidikan S3.</p>
+                <h3 class="text-sm font-bold text-slate-800">Perbandingan Proporsi Mahasiswa Juara Berdasarkan Latar
+                    Belakang Pendidikan Ibu</h3>
+                <p class="text-xs text-slate-500 mb-3">Persentase peluang mahasiswa meraih juara berdasarkan perbandingan latar belakang Ibu Tidak Sekolah dibandingkan dengan Ibu berpendidikan S3.</p>
                 <div id="chartIbuJuara"></div>
                 <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Gap juara mencapai +8,9 poin persentase, memperlihatkan pengaruh modal kultural keluarga terhadap kompetisi mahasiswa.
+                    💡 <span class="font-semibold">Insight:</span> Gap juara mencapai +8,9 poin persentase,
+                    memperlihatkan pengaruh modal kultural keluarga terhadap kompetisi mahasiswa.
                 </div>
             </div>
 
             <!-- Ibu - Rata-rata IPK -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Rata-rata IPK Mahasiswa</h3>
-                <p class="text-xs text-slate-500 mb-3">Capaian akademik berdasarkan pendidikan terakhir ibu.</p>
+                <h3 class="text-sm font-bold text-slate-800">Perbandingan Rata-rata IPK Mahasiswa Berdasarkan Latar
+                    Belakang Pendidikan Ibu</h3>
+                <p class="text-xs text-slate-500 mb-3">Capaian Nilai IPK berdasarkan perbandingan latar belakang ibu tidak sekolah dibandingkan dengan ibu berpendidikan S3</p>
                 <div id="chartIbuIPK"></div>
                 <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Lonjakan IPK dari 2,93 (Tidak Sekolah) ke 3,49 (S3) mencerminkan disparitas kesiapan akademik yang kuat.
+                    💡 <span class="font-semibold">Insight:</span> Lonjakan IPK dari 2,93 (Tidak Sekolah) ke 3,49 (S3)
+                    mencerminkan disparitas kesiapan akademik yang kuat.
                 </div>
             </div>
 
             <!-- Ibu - Prestasi Internasional -->
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Prestasi Skala Internasional</h3>
-                <p class="text-xs text-slate-500 mb-3">Proporsi peraih penghargaan tingkat internasional.</p>
+                <h3 class="text-sm font-bold text-slate-800">Perbandingan Proporsi Prestasi Internasional Berdasarkan
+                    Latar Belakang Pendidikan Ibu</h3>
+                <p class="text-xs text-slate-500 mb-3">Persentase perolehan prestasi tingkat internasional berdasarkan perbandingan latar belakang Ibu Tidak Sekolah dibandingkan dengan Ibu berpendidikan S3.</p>
                 <div id="chartIbuInter"></div>
                 <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Mahasiswa dengan latar belakang ibu S3 lebih sering tercatat menembus kancah internasional (6,3% vs 2,4%).
+                    💡 <span class="font-semibold">Insight:</span> Mahasiswa dengan latar belakang ibu S3 lebih sering
+                    tercatat menembus kancah internasional (6,3% vs 2,4%).
                 </div>
             </div>
         </div>
@@ -169,10 +204,10 @@
     <script>
         const baseOpt = {
             chart: { toolbar: { show: false }, zoom: { enabled: false }, fontFamily: 'inherit' },
-            dataLabels: { 
-                enabled: true, 
+            dataLabels: {
+                enabled: true,
                 style: { fontSize: '10px', colors: ['#334155'] },
-                offsetY: -16 
+                offsetY: -16
             },
             grid: { borderColor: '#f1f5f9', strokeDashArray: 4 },
             yaxis: { min: 0 }
@@ -189,14 +224,23 @@
             chart: { ...baseOpt.chart, type: 'bar', height: 190 },
             series: [{ name: 'Bekerja (%)', data: [51.2, 44.8, 31.7, 25.5, 21.9, 13.8, 10.5, 5.8] }],
             colors: ['#3b82f6'],
-            xaxis: { categories: ['UKT 1', 'UKT 2', 'UKT 3', 'UKT 4', 'UKT 5', 'UKT 6', 'UKT 7', 'UKT 8'] },
+            xaxis: {
+                categories: ['UKT 1', 'UKT 2', 'UKT 3', 'UKT 4', 'UKT 5', 'UKT 6', 'UKT 7', 'UKT 8'],
+                title: { text: 'Kategori UKT', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             plotOptions: { bar: { borderRadius: 4, columnWidth: '55%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 65 },
+            yaxis: {
+                min: 0,
+                max: 65,
+                title: { text: 'Persentase Bekerja (%)', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const d = detailBekerjaUKT[dataPointIndex];
-                    return `${val}% (${d.val} dari ${d.tot} mahasiswa)`;
-                }}
+                y: {
+                    formatter: function (val, { dataPointIndex }) {
+                        const d = detailBekerjaUKT[dataPointIndex];
+                        return `${val}% (${d.val} dari ${d.tot} mahasiswa)`;
+                    }
+                }
             }
         }).render();
 
@@ -205,10 +249,10 @@
 
         const baseOptLine = {
             ...baseOpt,
-            dataLabels: { 
-                enabled: true, 
+            dataLabels: {
+                enabled: true,
                 style: { fontSize: '10px', colors: ['#334155'] },
-                offsetY: -6 
+                offsetY: -6
             },
             markers: {
                 size: 4,
@@ -225,12 +269,21 @@
             series: [{ name: 'Rata-rata IPK', data: [2.94, 3.02, 3.08, 3.17, 3.26, 3.32, 3.36, 3.39] }],
             colors: ['#10b981'],
             stroke: { curve: 'smooth', width: 3 },
-            xaxis: { categories: ['1', '2', '3', '4', '5', '6', '7', '8'] },
-            yaxis: { min: 2.5, max: 4.0 },
+            xaxis: {
+                categories: ['UKT 1', 'UKT 2', 'UKT 3', 'UKT 4', 'UKT 5', 'UKT 6', 'UKT 7', 'UKT 8'],
+                title: { text: 'Kategori UKT', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
+            yaxis: {
+                min: 2.5,
+                max: 4.0,
+                title: { text: 'Rata-rata IPK', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    return `${val} (Total ${detailIPKUKT[dataPointIndex]} mahasiswa)`;
-                }}
+                y: {
+                    formatter: function (val, { dataPointIndex }) {
+                        return `${val} (Total ${detailIPKUKT[dataPointIndex]} mahasiswa)`;
+                    }
+                }
             }
         }).render();
 
@@ -244,14 +297,23 @@
             chart: { ...baseOpt.chart, type: 'bar', height: 190 },
             series: [{ name: 'Pernah Juara (%)', data: [7.9, 7.1, 10.9, 14.2, 17.6, 20.0, 23.5, 23.7] }],
             colors: ['#8b5cf6'],
-            xaxis: { categories: ['UKT 1', 'UKT 2', 'UKT 3', 'UKT 4', 'UKT 5', 'UKT 6', 'UKT 7', 'UKT 8'] },
+            xaxis: {
+                categories: ['UKT 1', 'UKT 2', 'UKT 3', 'UKT 4', 'UKT 5', 'UKT 6', 'UKT 7', 'UKT 8'],
+                title: { text: 'Kategori UKT', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             plotOptions: { bar: { borderRadius: 4, columnWidth: '55%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 30 },
+            yaxis: {
+                min: 0,
+                max: 30,
+                title: { text: 'Persentase Pernah Juara (%)', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const d = detailJuaraUKT[dataPointIndex];
-                    return `${val}% (${d.val} dari ${d.tot} mahasiswa)`;
-                }}
+                y: {
+                    formatter: function (val, { dataPointIndex }) {
+                        const d = detailJuaraUKT[dataPointIndex];
+                        return `${val}% (${d.val} dari ${d.tot} mahasiswa)`;
+                    }
+                }
             }
         }).render();
 
@@ -263,15 +325,24 @@
             chart: { ...baseOpt.chart, type: 'bar', height: 160 },
             series: [{ name: 'Prop. Juara (%)', data: [4.8, 19.7] }],
             colors: ['#6366f1'],
-            xaxis: { categories: dukCategories },
+            xaxis: {
+                categories: dukCategories,
+                title: { text: 'Tingkat Dukungan Keluarga', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 25 },
+            yaxis: {
+                min: 0,
+                max: 25,
+                title: { text: 'Persentase Juara (%)', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const counts = [14, 166];
-                    const totals = [294, 841];
-                    return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
-                }}
+                y: {
+                    formatter: function (val, { dataPointIndex }) {
+                        const counts = [14, 166];
+                        const totals = [294, 841];
+                        return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
+                    }
+                }
             }
         }).render();
 
@@ -280,15 +351,24 @@
             chart: { ...baseOpt.chart, type: 'bar', height: 160 },
             series: [{ name: 'Prestasi Internasional (%)', data: [1.0, 3.2] }],
             colors: ['#06b6d4'],
-            xaxis: { categories: dukCategories },
+            xaxis: {
+                categories: dukCategories,
+                title: { text: 'Tingkat Dukungan Keluarga', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 5 },
+            yaxis: {
+                min: 0,
+                max: 5,
+                title: { text: 'Prestasi Internasional (%)', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const counts = [3, 27];
-                    const totals = [294, 841];
-                    return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
-                }}
+                y: {
+                    formatter: function (val, { dataPointIndex }) {
+                        const counts = [3, 27];
+                        const totals = [294, 841];
+                        return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
+                    }
+                }
             }
         }).render();
 
@@ -297,14 +377,23 @@
             chart: { ...baseOpt.chart, type: 'bar', height: 160 },
             series: [{ name: 'Rata-rata IPK', data: [2.93, 3.38] }],
             colors: ['#10b981'],
-            xaxis: { categories: dukCategories },
+            xaxis: {
+                categories: dukCategories,
+                title: { text: 'Tingkat Dukungan Keluarga', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 2.0, max: 4.0 },
+            yaxis: {
+                min: 2.0,
+                max: 4.0,
+                title: { text: 'Rata-rata IPK', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const totals = [294, 841];
-                    return `${val} (Total ${totals[dataPointIndex]} mahasiswa)`;
-                }}
+                y: {
+                    formatter: function (val, { dataPointIndex }) {
+                        const totals = [294, 841];
+                        return `${val} (Total ${totals[dataPointIndex]} mahasiswa)`;
+                    }
+                }
             }
         }).render();
 
@@ -313,15 +402,24 @@
             chart: { ...baseOpt.chart, type: 'bar', height: 160 },
             series: [{ name: 'Bekerja Sambil Kuliah (%)', data: [39.1, 15.2] }],
             colors: ['#f43f5e'],
-            xaxis: { categories: dukCategories },
+            xaxis: {
+                categories: dukCategories,
+                title: { text: 'Tingkat Dukungan Keluarga', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 50 },
+            yaxis: {
+                min: 0,
+                max: 50,
+                title: { text: 'Persentase Bekerja (%)', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const counts = [115, 128];
-                    const totals = [294, 841];
-                    return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
-                }}
+                y: {
+                    formatter: function (val, { dataPointIndex }) {
+                        const counts = [115, 128];
+                        const totals = [294, 841];
+                        return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
+                    }
+                }
             }
         }).render();
 
@@ -333,15 +431,24 @@
             chart: { ...baseOpt.chart, type: 'bar', height: 160 },
             series: [{ name: 'Prop. Juara (%)', data: [11.4, 20.3] }],
             colors: ['#8b5cf6'],
-            xaxis: { categories: ibuCategories },
+            xaxis: {
+                categories: ibuCategories,
+                title: { text: 'Pendidikan Terakhir Ibu', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 25 },
+            yaxis: {
+                min: 0,
+                max: 25,
+                title: { text: 'Persentase Juara (%)', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const counts = [19, 16];
-                    const totals = [167, 79];
-                    return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
-                }}
+                y: {
+                    formatter: function (val, { dataPointIndex }) {
+                        const counts = [19, 16];
+                        const totals = [167, 79];
+                        return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
+                    }
+                }
             }
         }).render();
 
@@ -350,14 +457,23 @@
             chart: { ...baseOpt.chart, type: 'bar', height: 160 },
             series: [{ name: 'Rata-rata IPK', data: [2.93, 3.49] }],
             colors: ['#10b981'],
-            xaxis: { categories: ibuCategories },
+            xaxis: {
+                categories: ibuCategories,
+                title: { text: 'Pendidikan Terakhir Ibu', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 2.0, max: 4.0 },
+            yaxis: {
+                min: 2.0,
+                max: 4.0,
+                title: { text: 'Rata-rata IPK', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const totals = [167, 79];
-                    return `${val} (Total ${totals[dataPointIndex]} mahasiswa)`;
-                }}
+                y: {
+                    formatter: function (val, { dataPointIndex }) {
+                        const totals = [167, 79];
+                        return `${val} (Total ${totals[dataPointIndex]} mahasiswa)`;
+                    }
+                }
             }
         }).render();
 
@@ -366,17 +482,27 @@
             chart: { ...baseOpt.chart, type: 'bar', height: 160 },
             series: [{ name: 'Prestasi Internasional (%)', data: [2.4, 6.3] }],
             colors: ['#06b6d4'],
-            xaxis: { categories: ibuCategories },
+            xaxis: {
+                categories: ibuCategories,
+                title: { text: 'Pendidikan Terakhir Ibu', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 10 },
+            yaxis: {
+                min: 0,
+                max: 10,
+                title: { text: 'Prestasi Internasional (%)', style: { fontSize: '11px', fontWeight: 600, color: '#64748b' } }
+            },
             tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const counts = [4, 5];
-                    const totals = [167, 79];
-                    return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
-                }}
+                y: {
+                    formatter: function (val, { dataPointIndex }) {
+                        const counts = [4, 5];
+                        const totals = [167, 79];
+                        return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
+                    }
+                }
             }
         }).render();
     </script>
 </body>
+
 </html>
