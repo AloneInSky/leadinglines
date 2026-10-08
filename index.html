@@ -1,382 +1,298 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Analisis Mahasiswa</title>
-    <!-- Tailwind CSS untuk styling responsif -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- ApexCharts CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <style>
-        body { font-family: system-ui, -apple-system, sans-serif; background-color: #f1f5f9; }
-    </style>
-</head>
-<body class="bg-slate-100 text-slate-800 antialiased py-6 px-4">
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Peta Privilege Mahasiswa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: satu kolom di HP, dua kolom di laptop. Hero dengan angka raksasa, lalu tangga UKT (kupu-kupu + garis IPK + pembanding interaktif), dua kartu perbandingan, narasi, catatan baca. */
+:root{
+  --bg:#EDF0F5; --surface:#FFFFFF; --surface-2:#F4F6FA; --ink:#0F1A2A; --muted:#5A6678; --line:#D6DCE6;
+  --accent:#3340F2; --accent-soft:#E4E7FF; --burden:#D9461F; --gain:#0B8C79; --bar-low:#97A3B6; --dot-off:#DCE1EA;
+  --font-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --font-body:'Instrument Sans','Segoe UI',system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B0F17; --surface:#141A25; --surface-2:#1B2230; --ink:#E9EDF5; --muted:#9AA6B8; --line:#273044;
+    --accent:#939BFF; --accent-soft:#222A55; --burden:#FF8060; --gain:#3FD8BF; --bar-low:#55627A; --dot-off:#2A3347;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B0F17; --surface:#141A25; --surface-2:#1B2230; --ink:#E9EDF5; --muted:#9AA6B8; --line:#273044;
+  --accent:#939BFF; --accent-soft:#222A55; --burden:#FF8060; --gain:#3FD8BF; --bar-low:#55627A; --dot-off:#2A3347;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.6 var(--font-body);margin:0;padding-inline:clamp(16px,4vw,40px);padding-block:clamp(20px,4vw,48px)}
+.wrap{max-width:1120px;margin-inline:auto;display:flex;flex-direction:column;gap:clamp(2.5rem,6vw,4.5rem)}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:1.08;letter-spacing:-.02em}
+p{margin:0}
+.eyebrow{font:500 .72rem/1.3 var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
 
-    <div class="max-w-xl mx-auto space-y-6">
+/* Hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(1.5rem,4vw,3.5rem);align-items:end}
+.hero-copy{display:flex;flex-direction:column;gap:1.1rem;min-width:0}
+.hero h1{font-size:clamp(2.2rem,6vw,4.1rem);font-weight:800}
+.lede{max-width:60ch;color:var(--muted);font-size:1.06rem}
+.hero-stat{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:1.25rem;padding:clamp(1.25rem,3vw,2rem);display:flex;flex-direction:column;gap:.5rem;min-width:0}
+.big{font:800 clamp(4.2rem,15vw,8.2rem)/.9 var(--font-display);letter-spacing:-.05em;color:var(--burden)}
+.hero-stat figcaption{color:var(--muted);font-size:.95rem;max-width:34ch}
+.hero-stat figcaption b{color:var(--ink);font-weight:600}
 
-        <!-- Header -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 text-center">
-            <span class="bg-indigo-50 text-indigo-600 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Laporan Analisis Data</span>
-            <h1 class="text-xl font-extrabold text-slate-900 mt-2">Dashboard Kesenjangan & Prestasi Mahasiswa</h1>
-            <p class="text-xs text-slate-500 mt-1">Eksplorasi pengaruh UKT, Dukungan Keluarga, dan Pendidikan Ibu terhadap Akademik</p>
-        </div>
+.strip{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);border-block:1px solid var(--line)}
+.strip li{padding:1.1rem 1.25rem 1.1rem 0;display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.strip li+li{padding-left:1.25rem;border-left:1px solid var(--line)}
+.strip .v{font:700 clamp(1.8rem,4vw,2.5rem)/1 var(--font-display);letter-spacing:-.03em}
+.strip .v.g{color:var(--gain)} .strip .v.a{color:var(--accent)}
+.strip .t{font-size:.88rem;color:var(--muted)}
 
-        <!-- Top Summary Cards -->
-        <div class="grid grid-cols-2 gap-4">
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                <p class="text-xs text-slate-400 font-semibold uppercase">Gap Juara (Ibu S3)</p>
-                <p class="text-2xl font-black text-indigo-600 mt-1">+42,2%</p>
-                <p class="text-[11px] text-slate-500 mt-1 leading-tight">vs Ibu Tidak Sekolah, dimensi gap prestasi terbesar.</p>
-            </div>
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                <p class="text-xs text-slate-400 font-semibold uppercase">Rasio Kerja (UKT 1/8)</p>
-                <p class="text-2xl font-black text-rose-500 mt-1">~8,8×</p>
-                <p class="text-[11px] text-slate-500 mt-1 leading-tight">51,2% (UKT 1) berbanding 5,8% (UKT 8) mahasiswa bekerja.</p>
-            </div>
-        </div>
+/* Section heads */
+.sec{display:flex;flex-direction:column;gap:1.5rem}
+.sec-head{display:flex;flex-direction:column;gap:.7rem;max-width:68ch}
+.sec-head h2{font-size:clamp(1.6rem,3.8vw,2.4rem);font-weight:700}
+.sec-head p{color:var(--muted)}
 
-        <!-- SECTION 1: KATEGORI UKT -->
-        <div class="space-y-4">
-            <div class="border-b border-slate-200 pb-2">
-                <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Bagian 1: Analisis Berdasarkan Kategori UKT</h2>
-            </div>
+.card{background:var(--surface);border:1px solid var(--line);border-radius:1.1rem;padding:clamp(1rem,2.5vw,1.6rem);min-width:0}
+.card h3{font-size:1.15rem;font-weight:700}
+.card .sub{color:var(--muted);font-size:.9rem;margin-top:.3rem}
+.two{display:grid;grid-template-columns:1.15fr .85fr;gap:1rem}
 
-            <!-- Chart 1: Bekerja per UKT -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Proporsi Mahasiswa Bekerja Sambil Kuliah</h3>
-                <p class="text-xs text-slate-500 mb-3">Persentase mahasiswa dari UKT 1 hingga UKT 8 yang harus membagi waktu kerja.</p>
-                <div id="chartBekerja"></div>
-                <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Terjadi penurunan linier yang konsisten dari 51,2% (UKT 1) ke 5,8% (UKT 8). Semakin rendah kategori UKT, semakin tinggi tekanan ekonomi untuk bekerja.
-                </div>
-            </div>
+/* Butterfly */
+.bf{display:grid;gap:.4rem;margin-top:1.1rem}
+.bf-row{display:grid;grid-template-columns:3.3rem 1fr 1fr;gap:.55rem;align-items:center;padding:.25rem .35rem;border-radius:.5rem}
+.bf-row.on{background:var(--surface-2)}
+.bf-row.hd{padding-block:0}
+.bf-k{font:500 .78rem var(--font-mono);color:var(--muted)}
+.bf-row.hd span{font:500 .7rem/1.3 var(--font-mono);letter-spacing:.06em;text-transform:uppercase}
+.bf-row.hd .l{color:var(--burden);text-align:right}
+.bf-row.hd .r{color:var(--gain)}
+.bf-l,.bf-r{position:relative;display:flex;align-items:center;height:1.15rem}
+.bf-l{justify-content:flex-end;padding-left:2.9rem}
+.bf-r{justify-content:flex-start;padding-right:2.9rem}
+.bf-l i,.bf-r i{display:block;height:100%;border-radius:3px}
+.bf-l i{background:var(--burden);border-radius:3px 0 0 3px}
+.bf-r i{background:var(--gain);border-radius:0 3px 3px 0}
+.bf-l b,.bf-r b{position:absolute;font:500 .78rem var(--font-mono);font-variant-numeric:tabular-nums}
+.bf-l b{left:0}.bf-r b{right:0}
+.bf-l::after{content:"";position:absolute;right:0;top:-.3rem;bottom:-.3rem;width:1px;background:var(--line)}
+.note-sm{font-size:.8rem;color:var(--muted);margin-top:.9rem}
 
-            <!-- Chart 2: IPK per UKT -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Rata-rata IPK Mahasiswa per Kategori UKT</h3>
-                <p class="text-xs text-slate-500 mb-3">Perbandingan capaian akademik rata-rata dari kelompok UKT terendah ke tertinggi.</p>
-                <div id="chartIPK"></div>
-                <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Rata-rata IPK meningkat secara bertahap dari 2,94 (UKT 1) hingga 3,39 (UKT 8), berjalan seirama dengan berkurangnya beban kerja sambilan.
-                </div>
-            </div>
+/* IPK chart */
+.ipk-svg{width:100%;height:auto;display:block;margin-top:.6rem}
+.ipk-svg .gl{stroke:var(--line);stroke-width:1;fill:none}
+.ipk-svg text{fill:var(--muted);font:400 11.5px var(--font-mono)}
+.ipk-svg text.val{fill:var(--ink);font-weight:500}
+.ipk-svg .ln{stroke:var(--gain);stroke-width:2.5;fill:none;stroke-linejoin:round;stroke-linecap:round}
+.ipk-svg .ar{fill:var(--gain);opacity:.12}
+.ipk-svg .pt{fill:var(--surface);stroke:var(--gain);stroke-width:2}
+.ipk-svg .pt.a{fill:var(--ink);stroke:var(--ink)}
+.ipk-svg .pt.b{fill:var(--accent);stroke:var(--accent)}
 
-            <!-- Chart 3: Juara per UKT -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Proporsi Mahasiswa Pernah Juara per UKT</h3>
-                <p class="text-xs text-slate-500 mb-3">Persentase perolehan juara kompetisi akademik/non-akademik.</p>
-                <div id="chartJuaraUKT"></div>
-                <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Anomali positif atau kesenjangan akses terlihat di mana kelompok UKT atas memiliki proporsi juara jauh lebih tinggi ( hingga 23,7% ) dibanding UKT 1 (7,9%).
-                </div>
-            </div>
-        </div>
+/* Compare picker */
+.pickers{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.panel{display:flex;flex-direction:column;gap:1.1rem;min-width:0}
+.panel-head{display:flex;flex-direction:column;gap:.6rem}
+.panel-title{display:flex;align-items:center;gap:.6rem;font:700 1.05rem var(--font-display)}
+.tag{display:inline-grid;place-items:center;width:1.5rem;height:1.5rem;border-radius:.4rem;font:500 .75rem var(--font-mono);background:var(--ink);color:var(--bg)}
+.tag.b{background:var(--accent);color:var(--surface)}
+.seg{display:grid;grid-template-columns:repeat(8,1fr);gap:.3rem}
+.seg button{font:500 .85rem var(--font-mono);padding:.5rem 0;border-radius:.5rem;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s}
+.seg button:hover{border-color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.panel.pb .seg button[aria-pressed="true"]{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.waffles{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.waffles figure{margin:0;display:flex;flex-direction:column;gap:.6rem;min-width:0}
+.dots{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.dots span{aspect-ratio:1;border-radius:50%;background:var(--dot-off)}
+.dots.burden span.on{background:var(--burden)}
+.dots.gain span.on{background:var(--gain)}
+.waffles figcaption{font-size:.85rem;color:var(--muted);line-height:1.4}
+.waffles figcaption b{display:block;font:700 1.9rem/1 var(--font-display);color:var(--ink);letter-spacing:-.03em;margin-bottom:.15rem}
+.waffles figcaption small{display:block;font:400 .72rem var(--font-mono);margin-top:.25rem}
+.ipk-row{display:grid;grid-template-columns:auto 1fr auto;gap:.8rem;align-items:center;font-size:.85rem;color:var(--muted)}
+.ipk-row b{font:700 1.3rem var(--font-display);color:var(--ink)}
+.ipk-track{position:relative;height:.5rem;border-radius:99px;background:var(--dot-off)}
+.ipk-track i{position:absolute;top:50%;width:.9rem;height:.9rem;border-radius:50%;background:var(--ink);transform:translate(-50%,-50%);border:2px solid var(--surface);transition:left .25s}
+.panel.pb .ipk-track i{background:var(--accent)}
+.diff{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:.5rem;padding-top:1.2rem;border-top:1px dashed var(--line)}
+.diff div{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.diff .dl{font:500 .7rem var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.diff .dv{font:500 .95rem var(--font-mono);font-variant-numeric:tabular-nums}
+.diff .dr{font:700 1.5rem var(--font-display);letter-spacing:-.02em}
+.diff .dr.burden{color:var(--burden)} .diff .dr.gain{color:var(--gain)}
+.diff-msg{grid-column:1/-1;color:var(--muted);font-size:.9rem}
 
-        <!-- SECTION 2: DUKUNGAN KELUARGA -->
-        <div class="space-y-4 pt-4">
-            <div class="border-b border-slate-200 pb-2">
-                <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Bagian 2: Pengaruh Dukungan Keluarga (Tingkat 1 vs 5)</h2>
-            </div>
+/* Comparison cards */
+.cmp{display:flex;flex-direction:column;gap:1.3rem;margin-top:1.1rem}
+.cmp-legend{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font-size:.85rem;margin-top:.9rem}
+.cmp-legend span{display:inline-flex;align-items:center;gap:.4rem}
+.cmp-legend i{width:.7rem;height:.7rem;border-radius:2px;background:var(--bar-low)}
+.cmp-legend i.hi{background:var(--accent)}
+.cmp-head{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;margin-bottom:.4rem}
+.cmp-label{font-weight:600}
+.chip{font:500 .75rem var(--font-mono);background:var(--accent-soft);color:var(--accent);padding:.15rem .5rem;border-radius:99px;white-space:nowrap}
+.bar-line{display:grid;grid-template-columns:6.4rem 1fr 3.4rem;gap:.6rem;align-items:center;font-size:.82rem;margin-top:.25rem}
+.bar-line .who{color:var(--muted)}
+.bar-line .val{font:500 .85rem var(--font-mono);text-align:right;font-variant-numeric:tabular-nums}
+.track{height:.7rem;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.track i{display:block;height:100%;border-radius:99px;background:var(--bar-low)}
+.track i.hi{background:var(--accent)}
+.cmp-note{font-size:.8rem;color:var(--muted);margin-top:.4rem}
+.warn{margin-top:1.1rem;font-size:.82rem;color:var(--muted);padding:.7rem .85rem;border-radius:.7rem;background:var(--surface-2);border-left:3px solid var(--burden)}
 
-            <!-- Dukungan - Proporsi Juara -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Perbandingan Proporsi Juara</h3>
-                <p class="text-xs text-slate-500 mb-3">Dukungan keluarga terendah (Tingkat 1) vs tertinggi (Tingkat 5).</p>
-                <div id="chartDukJuara"></div>
-                <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Gap sebesar +15,0 poin persentase menunjukkan dukungan keluarga memberi dorongan signifikan bagi mahasiswa untuk berprestasi.
-                </div>
-            </div>
+/* Data pendukung */
+.two.eq{grid-template-columns:1fr 1fr}
+.pair-wrap{margin-top:1.1rem}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.pair>div{background:var(--surface-2);border-radius:.8rem;padding:.9rem 1rem;display:flex;flex-direction:column;gap:.3rem;min-width:0}
+.pv{font:800 clamp(2.2rem,6vw,3.2rem)/1 var(--font-display);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.pl{font-size:.82rem;color:var(--muted)}
+.cmp.wide{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.dots.cap{max-width:22rem}
+.insight{margin-top:1.1rem;font-size:.9rem;color:var(--muted);padding:.7rem .85rem;border-radius:.7rem;background:var(--surface-2);border-left:3px solid var(--accent)}
+.jr-g+.jr-g{margin-top:1.3rem}
+.jr-row{display:grid;grid-template-columns:7rem 1fr 3.3rem;gap:.6rem;align-items:center;margin-top:.45rem}
+.jr-k{display:flex;flex-direction:column;font-size:.85rem;line-height:1.25}
+.jr-k small{font:400 .68rem var(--font-mono);color:var(--muted)}
+.jr-v{font:500 .85rem var(--font-mono);text-align:right;font-variant-numeric:tabular-nums}
+.jr-row .track i{background:var(--gain)}
+.jr-row .track i.lo{background:var(--burden)}
+@media (max-width:880px){.two.eq,.cmp.wide{grid-template-columns:1fr}}
+@media (max-width:560px){.jr-row{grid-template-columns:5.6rem 1fr 3rem;gap:.45rem}}
 
-            <!-- Dukungan - Prestasi Internasional -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Prestasi Skala Internasional</h3>
-                <p class="text-xs text-slate-500 mb-3">Persentase mahasiswa yang menembus kompetisi internasional.</p>
-                <div id="chartDukInter"></div>
-                <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Mahasiswa dengan dukungan tertinggi hampir 3× lebih sering mencetak prestasi internasional (3,2% vs 1,0%).
-                </div>
-            </div>
+/* Narrative */
+.mech{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.mech article{background:var(--surface);border:1px solid var(--line);border-radius:1.1rem;padding:1.3rem;display:flex;flex-direction:column;gap:.7rem;min-width:0}
+.mech h3{font-size:1.25rem;font-weight:700}
+.mech p{color:var(--muted);font-size:.95rem}
+.mech p b{color:var(--ink);font-weight:600}
+.mech .fig{font:700 2.2rem/1 var(--font-display);letter-spacing:-.04em}
+.howto{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.howto ul{margin:.7rem 0 0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.55rem;color:var(--muted);font-size:.93rem}
+.howto li::marker{color:var(--muted)}
+.howto li b{color:var(--ink);font-weight:600}
+footer{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);padding-top:1.2rem;max-width:80ch}
 
-            <!-- Dukungan - Rata-rata IPK -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Rata-rata IPK Mahasiswa</h3>
-                <p class="text-xs text-slate-500 mb-3">Capaian IPK berdasarkan tingkat dukungan keluarga.</p>
-                <div id="chartDukIPK"></div>
-                <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Terdapat gradien positif yang jelas pada IPK rata-rata (2,93 naik menjadi 3,38).
-                </div>
-            </div>
+@media (max-width:880px){
+  .hero,.two,.two.eq,.pickers,.howto{grid-template-columns:1fr}
+  .mech{grid-template-columns:1fr}
+  .hero-stat{order:-1}
+}
+@media (max-width:560px){
+  .strip{grid-template-columns:1fr}
+  .strip li,.strip li+li{padding:.9rem 0;border-left:0}
+  .strip li+li{border-top:1px solid var(--line)}
+  .seg{grid-template-columns:repeat(4,1fr)}
+  .bar-line{grid-template-columns:5.2rem 1fr 3rem;gap:.45rem}
+  .diff{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
 
-            <!-- Dukungan - Bekerja Sambil Kuliah -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Proporsi Mahasiswa Bekerja Sambil Kuliah</h3>
-                <p class="text-xs text-slate-500 mb-3">Beban kerja sambilan berdasarkan tingkat dukungan keluarga.</p>
-                <div id="chartDukKerja"></div>
-                <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Semakin tinggi dukungan keluarga, semakin kecil keharusan mahasiswa untuk bekerja paruh waktu (39,1% turun ke 15,2%).
-                </div>
-            </div>
-        </div>
+<main class="wrap">
 
-        <!-- SECTION 3: PENDIDIKAN IBU -->
-        <div class="space-y-4 pt-4">
-            <div class="border-b border-slate-200 pb-2">
-                <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Bagian 3: Latar Belakang Pendidikan Ibu (Tidak Sekolah vs S3)</h2>
-            </div>
-
-            <!-- Ibu - Proporsi Juara -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Perbandingan Proporsi Juara</h3>
-                <p class="text-xs text-slate-500 mb-3">Ibu Tidak Sekolah vs Ibu berpendidikan S3.</p>
-                <div id="chartIbuJuara"></div>
-                <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Gap juara mencapai +8,9 poin persentase, memperlihatkan pengaruh modal kultural keluarga terhadap kompetisi mahasiswa.
-                </div>
-            </div>
-
-            <!-- Ibu - Rata-rata IPK -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Rata-rata IPK Mahasiswa</h3>
-                <p class="text-xs text-slate-500 mb-3">Capaian akademik berdasarkan pendidikan terakhir ibu.</p>
-                <div id="chartIbuIPK"></div>
-                <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Lonjakan IPK dari 2,93 (Tidak Sekolah) ke 3,49 (S3) mencerminkan disparitas kesiapan akademik yang kuat.
-                </div>
-            </div>
-
-            <!-- Ibu - Prestasi Internasional -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <h3 class="text-sm font-bold text-slate-800">Prestasi Skala Internasional</h3>
-                <p class="text-xs text-slate-500 mb-3">Proporsi peraih penghargaan tingkat internasional.</p>
-                <div id="chartIbuInter"></div>
-                <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600">
-                    💡 <span class="font-semibold">Insight:</span> Mahasiswa dengan latar belakang ibu S3 lebih sering tercatat menembus kancah internasional (6,3% vs 2,4%).
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="text-center py-6 text-xs text-slate-400">
-            Dashboard Analisis Mahasiswa • Dirancang untuk Visualisasi Data Interaktif
-        </div>
-
+  <header class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">5.000 mahasiswa · perbandingan latar belakang</p>
+      <h1>Start yang tidak sama di kampus yang sama</h1>
+      <p class="lede">Halaman ini membandingkan rata-rata IPK dan capaian prestasi mahasiswa berdasarkan status bekerja sambil kuliah, dukungan keluarga, dan kategori ekonomi.</p>
     </div>
+    <figure class="hero-stat">
+      <div class="big num">1,5×</div>
+      <figcaption><b>Mahasiswa yang tidak bekerja lebih sering pernah juara</b> dibanding mahasiswa yang bekerja: 17,0% berbanding 11,2%.</figcaption>
+    </figure>
+  </header>
 
-    <!-- Script Konfigurasi Chart -->
-    <script>
-        const baseOpt = {
-            chart: { toolbar: { show: false }, zoom: { enabled: false }, fontFamily: 'inherit' },
-            dataLabels: { 
-                enabled: true, 
-                style: { fontSize: '10px', colors: ['#334155'] },
-                offsetY: -16 
-            },
-            grid: { borderColor: '#f1f5f9', strokeDashArray: 4 },
-            yaxis: { min: 0 }
-        };
+  <ul class="strip" aria-label="Tiga temuan utama">
+    <li><span class="v g num">+0,35</span><span class="t">Selisih rata-rata IPK ekonomi tinggi dibanding ekonomi rendah (3,37 vs 3,02).</span></li>
+    <li><span class="v a num">4,1×</span><span class="t">Mahasiswa dengan dukungan keluarga tingkat 5 lebih sering pernah juara daripada tingkat 1 (19,7% vs 4,8%).</span></li>
+    <li><span class="v num">2,2×</span><span class="t">Prestasi internasional lebih sering pada kelompok ekonomi tinggi dibanding ekonomi rendah (4,1% vs 1,9%).</span></li>
+  </ul>
 
-        // --- 1. Bekerja per UKT ---
-        const detailBekerjaUKT = [
-            { val: 110, tot: 215 }, { val: 188, tot: 420 }, { val: 258, tot: 813 }, { val: 266, tot: 1042 },
-            { val: 240, tot: 1095 }, { val: 113, tot: 816 }, { val: 41, tot: 392 }, { val: 12, tot: 207 }
-        ];
+  <section class="sec" id="kerja">
+    <div class="sec-head">
+      <p class="eyebrow">Bagian 1 · Status bekerja</p>
+      <h2>Bekerja sambil kuliah dan capaian mahasiswa</h2>
+      <p>Dari 5.000 mahasiswa, 1.228 bekerja sambil kuliah dan 3.772 tidak. Rata-rata IPK kelompok bekerja 2,99, dibanding 3,27 pada kelompok tidak bekerja. Pernah menjadi juara: 138 (11,2%) mahasiswa bekerja dan 643 (17,0%) mahasiswa tidak bekerja. Prestasi internasional: 29 (2,4%) mahasiswa bekerja dan 118 (3,1%) mahasiswa tidak bekerja.</p>
+    </div>
+    <div class="card" id="cmpKerja"></div>
+  </section>
 
-        new ApexCharts(document.querySelector("#chartBekerja"), {
-            ...baseOpt,
-            chart: { ...baseOpt.chart, type: 'bar', height: 190 },
-            series: [{ name: 'Bekerja (%)', data: [51.2, 44.8, 31.7, 25.5, 21.9, 13.8, 10.5, 5.8] }],
-            colors: ['#3b82f6'],
-            xaxis: { categories: ['UKT 1', 'UKT 2', 'UKT 3', 'UKT 4', 'UKT 5', 'UKT 6', 'UKT 7', 'UKT 8'] },
-            plotOptions: { bar: { borderRadius: 4, columnWidth: '55%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 65 },
-            tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const d = detailBekerjaUKT[dataPointIndex];
-                    return `${val}% (${d.val} dari ${d.tot} mahasiswa)`;
-                }}
-            }
-        }).render();
+  <section class="sec" id="dukungan">
+    <div class="sec-head">
+      <p class="eyebrow">Bagian 2 · Dukungan keluarga</p>
+      <h2>Keluarga memberi lebih dari uang kuliah</h2>
+      <p>Perbandingan rata-rata IPK, capaian prestasi, dan status bekerja pada mahasiswa dengan dukungan keluarga tingkat 1 (paling rendah) dan tingkat 5 (paling tinggi).</p>
+    </div>
+    <div class="card" id="cmpDuk"></div>
+  </section>
 
-        // --- 2. IPK per UKT (Line Chart dengan Dots & Tooltip Detail) ---
-        const detailIPKUKT = [215, 420, 813, 1042, 1095, 816, 392, 207];
+  <section class="sec" id="ekonomi">
+    <div class="sec-head">
+      <p class="eyebrow">Bagian 3 · Kategori ekonomi</p>
+      <h2>IPK ekonomi tinggi 0,35 poin di atas ekonomi rendah</h2>
+      <p>Dari 5.000 mahasiswa, 1.111 masuk kategori ekonomi rendah dan 1.233 ekonomi tinggi; 2.656 mahasiswa kategori menengah tidak diikutkan. Rata-rata IPK kelompok rendah 3,02 dan tinggi 3,37. Pernah menjadi juara: 101 (9,1%) mahasiswa ekonomi rendah dan 263 (21,3%) ekonomi tinggi. Prestasi internasional: 21 (1,9%) mahasiswa ekonomi rendah dan 51 (4,1%) ekonomi tinggi. Kategori ekonomi berasal dari data status sosial ekonomi dan berbeda dari kategori UKT.</p>
+    </div>
+    <div class="card" id="cmpEko"></div>
+  </section>
 
-        const baseOptLine = {
-            ...baseOpt,
-            dataLabels: { 
-                enabled: true, 
-                style: { fontSize: '10px', colors: ['#334155'] },
-                offsetY: -6 
-            },
-            markers: {
-                size: 4,
-                colors: ['#10b981'],
-                strokeColors: '#fff',
-                strokeWidth: 2,
-                hover: { size: 6 }
-            }
-        };
+  <footer><b>Catatan penting:</b> Data pada halaman ini adalah data buatan/simulasi, bukan data resmi Universitas X. Jangan gunakan atau kutip angka-angka ini sebagai fakta yang mewakili mahasiswa maupun kondisi nyata Universitas X.</footer>
+</main>
 
-        new ApexCharts(document.querySelector("#chartIPK"), {
-            ...baseOptLine,
-            chart: { ...baseOpt.chart, type: 'line', height: 190 },
-            series: [{ name: 'Rata-rata IPK', data: [2.94, 3.02, 3.08, 3.17, 3.26, 3.32, 3.36, 3.39] }],
-            colors: ['#10b981'],
-            stroke: { curve: 'smooth', width: 3 },
-            xaxis: { categories: ['1', '2', '3', '4', '5', '6', '7', '8'] },
-            yaxis: { min: 2.5, max: 4.0 },
-            tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    return `${val} (Total ${detailIPKUKT[dataPointIndex]} mahasiswa)`;
-                }}
-            }
-        }).render();
+<script>
+const fmt=(x,d=1)=>x.toLocaleString('id-ID',{minimumFractionDigits:d,maximumFractionDigits:d});
+function cmpCard(id,spec){
+  const el=document.getElementById(id);
+  const hero=spec.hero?`<div class="pair-wrap"><div class="cmp-head"><span class="cmp-label">${spec.hero.label}</span><span class="chip">+${fmt(spec.hero.high-spec.hero.low,2)} poin</span></div><div class="pair"><div><span class="pv" style="color:var(--ink)">${fmt(spec.hero.low,2)}</span><span class="pl">${spec.lowLabel} · n=${spec.ln.toLocaleString('id-ID')}</span></div><div><span class="pv" style="color:var(--accent)">${fmt(spec.hero.high,2)}</span><span class="pl">${spec.highLabel} · n=${spec.hn.toLocaleString('id-ID')}</span></div></div></div>`:'';
+  const rows=spec.rows.map(r=>{
+    const lo=r.kind==='ipk'?r.low:r.lc/spec.ln*100, hi=r.kind==='ipk'?r.high:r.hc/spec.hn*100;
+    const max=r.kind==='ipk'?4:Math.max(lo,hi);
+    const diff=hi-lo, unit=r.kind==='ipk'?' poin':' pp';
+    const chip=(diff>=0?'+':'−')+fmt(Math.abs(diff),r.kind==='ipk'?2:1)+unit;
+    const f=v=>r.kind==='ipk'?fmt(v,2):fmt(v)+'%';
+    const note=r.kind==='ipk'?`Skala 0 sampai 4,00. ${r.note||''}`:`${r.note}. ${r.lc} dari ${spec.ln} vs ${r.hc} dari ${spec.hn} mahasiswa.`;
+    return `<div><div class="cmp-head"><span class="cmp-label">${r.label}</span><span class="chip">${chip}</span></div>
+      <div class="bar-line"><span class="who">${spec.lowLabel}</span><div class="track"><i style="width:${lo/max*100}%"></i></div><span class="val">${f(lo)}</span></div>
+      <div class="bar-line"><span class="who">${spec.highLabel}</span><div class="track"><i class="hi" style="width:${hi/max*100}%"></i></div><span class="val">${f(hi)}</span></div>
+      <p class="cmp-note">${note}</p></div>`;
+  }).join('');
+  el.innerHTML=`<p class="eyebrow">${spec.eyebrow}</p><h3 style="margin-top:.4rem;font-size:1.4rem">${spec.title}</h3>
+   <p class="sub">${spec.sub}</p>
+   ${hero}<div class="cmp-legend"><span><i></i>${spec.lowLabel} (n=${spec.ln})</span><span><i class="hi"></i>${spec.highLabel} (n=${spec.hn})</span></div>
+   <div class="cmp${spec.wide?' wide':''}">${rows}</div>${spec.warn?`<p class="warn">${spec.warn}</p>`:''}`;
+}
+cmpCard('cmpDuk',{
+  eyebrow:'Bagian 2',title:'Dukungan keluarga',sub:'Tingkat 1 (paling rendah) dibanding tingkat 5 (paling tinggi).',
+  lowLabel:'Tingkat 1',highLabel:'Tingkat 5',ln:294,hn:841,
+  rows:[
+    {label:'Pernah juara',kind:'pct',lc:14,hc:166,note:'4,1× lebih sering'},
+    {label:'Prestasi internasional',kind:'pct',lc:3,hc:27,note:'3,1× lebih sering'},
+    {label:'Bekerja sambil kuliah',kind:'pct',lc:115,hc:128,note:'Beban kerja turun 61%'},
+    {label:'IPK rata-rata',kind:'ipk',low:2.93,high:3.38,note:'Selisih 0,45 poin.'}
+  ]
+});
+cmpCard('cmpKerja',{
+  eyebrow:'Bagian 1',title:'Bekerja vs tidak bekerja',sub:'Mahasiswa yang bekerja sambil kuliah dibanding yang tidak.',
+  lowLabel:'Bekerja',highLabel:'Tidak bekerja',ln:1228,hn:3772,
+  hero:{label:'IPK rata-rata',low:2.99,high:3.27},
+  rows:[
+    {label:'Pernah juara',kind:'pct',lc:138,hc:643,note:'1,5× lebih sering pada yang tidak bekerja'},
+    {label:'Prestasi internasional',kind:'pct',lc:29,hc:118,note:'1,3× lebih sering pada yang tidak bekerja'}
+  ]
+});
+cmpCard('cmpEko',{
+  eyebrow:'Bagian 3',title:'Ekonomi rendah vs tinggi',sub:'IPK rata-rata, disusul peluang juara dan prestasi internasional.',
+  lowLabel:'Rendah',highLabel:'Tinggi',ln:1111,hn:1233,wide:true,
+  hero:{label:'IPK rata-rata',low:3.02,high:3.37},
+  rows:[
+    {label:'Pernah juara',kind:'pct',lc:101,hc:263,note:'2,3× lebih sering'},
+    {label:'Prestasi internasional',kind:'pct',lc:21,hc:51,note:'2,2× lebih sering'}
+  ]
+});
+</script>
 
-        const detailJuaraUKT = [
-            { val: 17, tot: 215 }, { val: 30, tot: 420 }, { val: 89, tot: 813 }, { val: 148, tot: 1042 },
-            { val: 193, tot: 1095 }, { val: 163, tot: 816 }, { val: 92, tot: 392 }, { val: 49, tot: 207 }
-        ];
-
-        new ApexCharts(document.querySelector("#chartJuaraUKT"), {
-            ...baseOpt,
-            chart: { ...baseOpt.chart, type: 'bar', height: 190 },
-            series: [{ name: 'Pernah Juara (%)', data: [7.9, 7.1, 10.9, 14.2, 17.6, 20.0, 23.5, 23.7] }],
-            colors: ['#8b5cf6'],
-            xaxis: { categories: ['UKT 1', 'UKT 2', 'UKT 3', 'UKT 4', 'UKT 5', 'UKT 6', 'UKT 7', 'UKT 8'] },
-            plotOptions: { bar: { borderRadius: 4, columnWidth: '55%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 30 },
-            tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const d = detailJuaraUKT[dataPointIndex];
-                    return `${val}% (${d.val} dari ${d.tot} mahasiswa)`;
-                }}
-            }
-        }).render();
-
-        // --- DUKUNGAN KELUARGA ---
-        const dukCategories = ['Tingkat 1', 'Tingkat 5'];
-
-        new ApexCharts(document.querySelector("#chartDukJuara"), {
-            ...baseOpt,
-            chart: { ...baseOpt.chart, type: 'bar', height: 160 },
-            series: [{ name: 'Prop. Juara (%)', data: [4.8, 19.7] }],
-            colors: ['#6366f1'],
-            xaxis: { categories: dukCategories },
-            plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 25 },
-            tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const counts = [14, 166];
-                    const totals = [294, 841];
-                    return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
-                }}
-            }
-        }).render();
-
-        new ApexCharts(document.querySelector("#chartDukInter"), {
-            ...baseOpt,
-            chart: { ...baseOpt.chart, type: 'bar', height: 160 },
-            series: [{ name: 'Prestasi Internasional (%)', data: [1.0, 3.2] }],
-            colors: ['#06b6d4'],
-            xaxis: { categories: dukCategories },
-            plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 5 },
-            tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const counts = [3, 27];
-                    const totals = [294, 841];
-                    return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
-                }}
-            }
-        }).render();
-
-        new ApexCharts(document.querySelector("#chartDukIPK"), {
-            ...baseOpt,
-            chart: { ...baseOpt.chart, type: 'bar', height: 160 },
-            series: [{ name: 'Rata-rata IPK', data: [2.93, 3.38] }],
-            colors: ['#10b981'],
-            xaxis: { categories: dukCategories },
-            plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 2.0, max: 4.0 },
-            tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const totals = [294, 841];
-                    return `${val} (Total ${totals[dataPointIndex]} mahasiswa)`;
-                }}
-            }
-        }).render();
-
-        new ApexCharts(document.querySelector("#chartDukKerja"), {
-            ...baseOpt,
-            chart: { ...baseOpt.chart, type: 'bar', height: 160 },
-            series: [{ name: 'Bekerja Sambil Kuliah (%)', data: [39.1, 15.2] }],
-            colors: ['#f43f5e'],
-            xaxis: { categories: dukCategories },
-            plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 50 },
-            tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const counts = [115, 128];
-                    const totals = [294, 841];
-                    return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
-                }}
-            }
-        }).render();
-
-        // --- PENDIDIKAN IBU ---
-        const ibuCategories = ['Tidak Sekolah', 'S3'];
-
-        new ApexCharts(document.querySelector("#chartIbuJuara"), {
-            ...baseOpt,
-            chart: { ...baseOpt.chart, type: 'bar', height: 160 },
-            series: [{ name: 'Prop. Juara (%)', data: [11.4, 20.3] }],
-            colors: ['#8b5cf6'],
-            xaxis: { categories: ibuCategories },
-            plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 25 },
-            tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const counts = [19, 16];
-                    const totals = [167, 79];
-                    return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
-                }}
-            }
-        }).render();
-
-        new ApexCharts(document.querySelector("#chartIbuIPK"), {
-            ...baseOpt,
-            chart: { ...baseOpt.chart, type: 'bar', height: 160 },
-            series: [{ name: 'Rata-rata IPK', data: [2.93, 3.49] }],
-            colors: ['#10b981'],
-            xaxis: { categories: ibuCategories },
-            plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 2.0, max: 4.0 },
-            tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const totals = [167, 79];
-                    return `${val} (Total ${totals[dataPointIndex]} mahasiswa)`;
-                }}
-            }
-        }).render();
-
-        new ApexCharts(document.querySelector("#chartIbuInter"), {
-            ...baseOpt,
-            chart: { ...baseOpt.chart, type: 'bar', height: 160 },
-            series: [{ name: 'Prestasi Internasional (%)', data: [2.4, 6.3] }],
-            colors: ['#06b6d4'],
-            xaxis: { categories: ibuCategories },
-            plotOptions: { bar: { borderRadius: 4, columnWidth: '40%', dataLabels: { position: 'top' } } },
-            yaxis: { min: 0, max: 10 },
-            tooltip: {
-                y: { formatter: function(val, { dataPointIndex }) {
-                    const counts = [4, 5];
-                    const totals = [167, 79];
-                    return `${val}% (${counts[dataPointIndex]} dari ${totals[dataPointIndex]} mahasiswa)`;
-                }}
-            }
-        }).render();
-    </script>
-</body>
-</html>
+</body></html>
